@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_2sdp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:elevation="@dimen/fab_margin"
+        android:padding="@dimen/_5sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_20sdp"
+        app:cardElevation="@dimen/_3sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:padding="5dp">
+            <ImageView
+                android:layout_margin="@dimen/_5sdp"
+                android:id="@+id/earchimage"
+                android:scaleType="fitXY"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_50sdp"/>
+
+            <TextView
+                android:layout_toRightOf="@id/earchimage"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:id="@+id/searchtitle"
+                android:ellipsize="end"
+                android:maxLines="2"
+                style="@style/textviewstyle"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:gravity="center"
+                android:textAlignment="viewStart"
+                tools:ignore="RtlCompat" />
+
+            <TextView
+                android:id="@+id/nippet"
+                android:layout_toRightOf="@id/earchimage"
+                android:layout_marginStart="@dimen/_10sdp"
+                style="@style/textviewstyle"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_below="@id/title"
+                android:gravity="center"
+                android:textStyle="normal"
+                android:textAlignment="viewStart"
+                tools:ignore="RtlCompat" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
