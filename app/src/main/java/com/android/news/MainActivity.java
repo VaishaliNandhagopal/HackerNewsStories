@@ -4,37 +4,25 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.android.news.searchmodel.Context;
-import com.android.news.utils.TimeConvertion;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
-import com.android.news.databinding.ActivityMainBinding;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Logger;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.net.URISyntaxException;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.news.databinding.ActivityMainBinding;
+import com.android.news.search.SearchActivity;
+
+/**
+ * This class used to initiate the fragment to load the hacker news ragment
+ * Launch the search activity for search
+ */
 public class MainActivity extends AppCompatActivity {
 
-   // private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
     MainActivity mActivity;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,35 +31,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        mActivity=this;
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        mActivity = this;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
-//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//        firebaseDatabase.setLogLevel(Logger.Level.DEBUG);
-
-//        try {
-//            String name = TimeConvertion.getDomainName("https://timesofe.com/how-michigan-grew-its-startup-ecosystem-and-became-the-state-with-the-fastest-growing-venture-capital/");
-//            Log.d("TAG", "onCreate: "+name);
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-      /*   FirebaseOptions options = new FirebaseOptions.Builder()
-                .setApplicationId(FIREBASE_APPLICATION_ID)
-                .setProjectId(FIREBASE_PROJECT_ID)
-                .setGcmSenderId(FIREBASE_GCM_SENDER_ID)
-                .setApiKey(FIREBASE_APIKEY_ID)
-                .build();
-
-        FirebaseApp.initializeApp( getApplicationContext(), options);*/
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent search =new Intent(mActivity,SearchActivity.class);
+                Intent search = new Intent(mActivity, SearchActivity.class);
                 startActivity(search);
             }
         });
@@ -79,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        menu.setGroupVisible(R.menu.menu_main, false);
+        return false;
     }
 
     @Override
@@ -101,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return  super.onSupportNavigateUp();
+        return super.onSupportNavigateUp();
     }
 }

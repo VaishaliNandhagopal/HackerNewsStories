@@ -8,11 +8,14 @@ import com.android.news.repo.Repository;
 
 import java.util.List;
 
-public class CatViewModel extends AndroidViewModel {
+/**
+ * This view model class used to handle the data from room.
+ */
+public class HackerViewModel extends AndroidViewModel {
     private Repository repository;
     public LiveData<List<Model>> getAllData;
 
-    public CatViewModel(@NonNull Application application) {
+    public HackerViewModel(@NonNull Application application) {
         super(application);
         repository=new Repository(application);
         getAllData=repository.getAllData();

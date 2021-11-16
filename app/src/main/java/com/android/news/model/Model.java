@@ -11,6 +11,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * This model class used to create the columns in tables.
+ */
 @Entity(tableName = "model", indices = @Index(value = {"id"}, unique = true))
 public class Model {
     @PrimaryKey

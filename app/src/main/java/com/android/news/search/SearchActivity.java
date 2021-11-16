@@ -1,4 +1,4 @@
-package com.android.news;
+package com.android.news.search;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.news.R;
 import com.android.news.adapter.SearchAdapter;
 import com.android.news.repo.SearchApi;
 import com.android.news.searchmodel.ItemsItem;
@@ -29,6 +30,9 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * This class used for the search and load the search results in recyclerview
+ */
 public class SearchActivity extends Activity {
     private final String QUERY_PARAM_API_KEY = "AIzaSyCGTHMilAaxeKEn12Xzq99zYGjY7YYAurE";
     private final String QUERY_PARAM_CX = "d6359fc248fc6acdb";
@@ -72,6 +76,10 @@ public class SearchActivity extends Activity {
 
     }
 
+    /**
+     * This method used to access the query by google api.
+     * @param mquery Used or the query formation in API
+     */
     public void makerequest(String mquery) {
         Retrofit retrofit = null;
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -102,14 +110,12 @@ public class SearchActivity extends Activity {
                     if (response.isSuccessful()) {
                         Response mResponse = response.body();
                         assert mResponse != null;
-                        Log.d("search", "success " + mResponse.getItems());
                         getItems.addAll(mResponse.getItems());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Response> call, Throwable t) {
-                    Log.d("main", "onFailure: " + t.getMessage());
                     Toast.makeText(mContext,"No internet connection",Toast.LENGTH_LONG).show();
                 }
             });

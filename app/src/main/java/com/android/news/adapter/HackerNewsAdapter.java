@@ -17,6 +17,10 @@ import com.android.news.utils.TimeConvertion;
 import java.net.URISyntaxException;
 import java.util.List;
 
+/**
+ * This is used to load the Hacker news API results
+ */
+
 public class HackerNewsAdapter extends RecyclerView.Adapter<HackerNewsAdapter.HackerNewsHolder>{
 
     private Context context;
@@ -35,10 +39,8 @@ public class HackerNewsAdapter extends RecyclerView.Adapter<HackerNewsAdapter.Ha
 
     @Override
     public void onBindViewHolder(@NonNull HackerNewsHolder holder, int position) {
-        Log.d("TAG", "onBindViewHolder: ");
         Model cat=cats.get(position);
         if(cat!=null) {
-            Log.d("TAG", "onBindViewHolder: " + TimeConvertion.toDuration(cat.getTime()));
             holder.otitle.setText(cat.getTitle());
             try {
                 if(cat.getUrl()!=null)
@@ -47,7 +49,7 @@ public class HackerNewsAdapter extends RecyclerView.Adapter<HackerNewsAdapter.Ha
                 e.printStackTrace();
             }
             holder.oUrl.getPaint().setUnderlineText(true);
-            holder.oBy.setText("By : " + cat.getBy() + " | " + TimeConvertion.toDuration(cat.getTime()));
+            holder.oBy.setText("By : " + cat.getBy() + " | " + TimeConvertion.getTimeAgo(cat.getTime()));
             if (cat.getDescendants()!=null && cat.getDescendants() != 0 ) {
                 holder.oLike.setText(cat.getDescendants().toString());
             } else {
@@ -59,12 +61,6 @@ public class HackerNewsAdapter extends RecyclerView.Adapter<HackerNewsAdapter.Ha
                 holder.oComment.setText("0");
             }
         }
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override

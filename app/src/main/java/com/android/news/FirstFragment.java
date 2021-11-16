@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,7 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.news.adapter.HackerNewsAdapter;
 import com.android.news.databinding.FragmentFirstBinding;
-import com.android.news.model.CatViewModel;
+import com.android.news.model.HackerViewModel;
 import com.android.news.model.Model;
 import com.android.news.repo.HackNewsapi;
 import com.android.news.repo.Repository;
@@ -34,6 +35,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * This class used to form the hacker news overall details
+ */
 public class FirstFragment extends Fragment {
     public static final String Base_URL = "https://hacker-news.firebaseio.com/";
     View root;
@@ -43,13 +47,13 @@ public class FirstFragment extends Fragment {
     Call<List<Integer>> topstories;
     List<Integer> topStoriescountlist;
     int start, end, refresh = 1, size;
+    LinearLayoutManager mLayoutManager;
     private FragmentFirstBinding binding;
-    private CatViewModel catViewModel;
+    private HackerViewModel hackerViewModel;
     private List<Model> getCats;
     private HackerNewsAdapter HackerNewsAdapter;
     private RecyclerView recyclerView;
     private Repository repository;
-    LinearLayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,9 +77,6 @@ public class FirstFragment extends Fragment {
                     @Override
                     public int computeVerticalScrollOffset(RecyclerView.State state) {
                         if (findFirstCompletelyVisibleItemPosition() == 0) {
-                            // Force scrollbar to top of range. When scrolling down, the scrollbar
-                            // will jump since RecyclerView seems to assume the same height for
-                            // all items.
                             return 0;
                         } else {
                             return super.computeVerticalScrollOffset(state);
@@ -83,19 +84,27 @@ public class FirstFragment extends Fragment {
                     }
                 };
         recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setHasFixedSize(true);
-        catViewModel = new ViewModelProvider(this).get(CatViewModel.class);
+        recyclerView.setHasFixedSize(true);
+        hackerViewModel = new ViewModelProvider(this).get(HackerViewModel.class);
         HackerNewsAdapter = new HackerNewsAdapter(mContext, getCats);
+        HackerNewsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                if (positionStart == 0 && positionStart == mLayoutManager.findFirstCompletelyVisibleItemPosition()) {
+                    mLayoutManager.scrollToPosition(0);
+                }
+            }
+        });
+
         makeRequest();
-        catViewModel.getAllData().observe(getViewLifecycleOwner(), new Observer<List<Model>>() {
+        hackerViewModel.getAllData().observe(getViewLifecycleOwner(), new Observer<List<Model>>() {
             @Override
             public void onChanged(List<Model> cats) {
                 HackerNewsAdapter.getAllDatas(cats);
                 recyclerView.setAdapter(HackerNewsAdapter);
-                Log.d("main", "onChanged: " + cats);
             }
         });
-        // SetOnRefreshListener on SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -105,15 +114,18 @@ public class FirstFragment extends Fragment {
         });
     }
 
+    /**
+     * Rearrange the data to top of the list
+     *
+     * @param count set the count based on the ie o topstories-id
+     */
     public void RearrangeItems(int count) {
         start = count * 10;
         end = start + 10;
-        if(topStoriescountlist!=null) {
+        if (topStoriescountlist != null) {
             int remain = topStoriescountlist.size() - end;
-            Log.d("TAG", "RearrangeItems: start[" + start + "]end[" + end + "]size[" + size + "]");
             if (start <= topStoriescountlist.size()) {
                 if (end < remain) {
-                    Log.d("TAG", "RearrangeItems: start[" + start + "]end[" + end + "]");
                     loadData(start, end);
                 } else {
                     loadData(start, remain);
@@ -121,8 +133,15 @@ public class FirstFragment extends Fragment {
 
             }
         }
+        HackerNewsAdapter.notifyItemRangeInserted(0, 9);
+        recyclerView.setAdapter(HackerNewsAdapter);
+
     }
 
+    /**
+     * Form request to access the data by retrofit
+     * Get the list of itemid and based on the id retrive data for specific id
+     */
     private void makeRequest() {
         Retrofit retrofit = null;
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -151,13 +170,21 @@ public class FirstFragment extends Fragment {
                 @Override
                 public void onFailure(Call<List<Integer>> call, Throwable t) {
                     Log.d("main", "onFailure: " + t.getMessage());
+                    Toast.makeText(mContext, "No internet connection", Toast.LENGTH_LONG).show();
+
                 }
             });
         }
     }
 
+    /**
+     * load the data by using the id and start and end index from the arraylist
+     *
+     * @param start start index of the arraylist
+     * @param end   end index of the arraylist
+     */
+
     public void loadData(int start, int end) {
-        Log.d("TAG", "loadData: " + start + "[" + end + "]");
         List<Model> mModel = new ArrayList<>();
         for (int i = start; i < end; i++) {
             int finalI = i;
@@ -168,8 +195,6 @@ public class FirstFragment extends Fragment {
                         Log.d("success", "title: " + response.body().getTitle() + "i[" + finalI + "]");
                         mModel.add(response.body());
                         repository.insert(mModel);
-                        //mModel.remove(response.body());
-
                     }
 
                 }
@@ -177,25 +202,11 @@ public class FirstFragment extends Fragment {
                 @Override
                 public void onFailure(Call<Model> call, Throwable t) {
                     Log.d("TAG", "onFailure: of model");
+                    Toast.makeText(mContext, "No internet connection", Toast.LENGTH_LONG).show();
                 }
             });
-
         }
-        HackerNewsAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                if (positionStart == 0 && positionStart == mLayoutManager.findFirstCompletelyVisibleItemPosition()) {
-                    mLayoutManager.scrollToPosition(0);
-                }
-            }
-        });
-
-        HackerNewsAdapter.notifyItemRangeInserted(0,9);
         HackerNewsAdapter.getAllDatas(mModel);
-        recyclerView.setAdapter(HackerNewsAdapter);
-        mModel.removeAll(mModel);
-
 
     }
 

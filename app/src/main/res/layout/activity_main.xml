@@ -29,9 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
-        app:tint="@null"
+        android:layout_marginBottom="16dp"
         app:backgroundTint="@color/purple"
         app:srcCompat="@drawable/search"
-        android:layout_marginBottom="16dp" />
+        app:tint="@null" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

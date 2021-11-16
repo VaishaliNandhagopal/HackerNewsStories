@@ -11,6 +11,9 @@ import com.android.news.model.Model;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
+/**
+ * This class used to insert data into the database
+ */
 public class Repository {
     public hacksDao hacksDao;
     public LiveData<List<Model>> getAllData;
@@ -23,15 +26,27 @@ public class Repository {
 
     }
 
-    public void insert(List<Model> cats){
+    /**
+     * Insert data into the table of Database
+     * @param models insert the data
+     */
+    public void insert(List<Model> models){
         Log.d("REPOSITORY", "insert: ");
-        new InsertAsyncTask(hacksDao).execute(cats);
+        new InsertAsyncTask(hacksDao).execute(models);
 
     }
 
+    /**
+     * Observe the data from the every request
+     * @return list of model retrive from table
+     */
     public LiveData<List<Model>> getAllData(){
         return getAllData;
     }
+
+    /**
+     * This async task used to load the  data ad insert the data into the  table
+     */
     private static class InsertAsyncTask extends AsyncTask<List<Model>,Void,Void>{
         private hacksDao hacksDao;
 
@@ -41,11 +56,10 @@ public class Repository {
         }
         @Override
         protected Void doInBackground(List<Model>... lists) {
-            Log.d("Repo", "doInBackground: "+lists.toString());
             try {
                 hacksDao.insert(lists[0]);
             }catch (ConcurrentModificationException exception){
-                Log.d("Repo", "Eception : "+exception);
+                Log.d("Repo", "Exception : "+exception);
             }
             return null;
         }

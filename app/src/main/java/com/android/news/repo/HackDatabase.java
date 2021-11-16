@@ -11,6 +11,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.android.news.model.Model;
 
+/**
+ * This database class used to create the Database and create table
+ * To insert the data into the table to retrieve for cache
+ */
 @Database(entities = {Model.class},version =8 )
 public abstract class HackDatabase extends RoomDatabase {
 
@@ -32,6 +36,9 @@ public abstract class HackDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    /**
+     * This method used to open table and get the data from the table
+     */
     public static Callback callback = new Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -39,6 +46,10 @@ public abstract class HackDatabase extends RoomDatabase {
             new PopulateDbAsyn(INSTANCE);
         }
     };
+
+    /**
+     * This async task used to delete the data from the table
+     */
 
     static  class  PopulateDbAsyn extends AsyncTask<Void,Void,Void>{
         private hacksDao hacksDao;

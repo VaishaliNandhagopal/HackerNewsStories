@@ -22,34 +22,26 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_5sdp"
             android:padding="5dp">
-            <ImageView
-                android:layout_margin="@dimen/_5sdp"
-                android:id="@+id/earchimage"
-                android:scaleType="fitXY"
-                android:layout_width="@dimen/_45sdp"
-                android:layout_height="@dimen/_50sdp"/>
 
             <TextView
-                android:layout_toRightOf="@id/earchimage"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_2sdp"
                 android:id="@+id/searchtitle"
                 android:ellipsize="end"
                 android:maxLines="2"
                 style="@style/textviewstyle"
-                android:layout_width="@dimen/_200sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:gravity="center"
                 android:textAlignment="viewStart"
                 tools:ignore="RtlCompat" />
 
             <TextView
-                android:id="@+id/nippet"
-                android:layout_toRightOf="@id/earchimage"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:id="@+id/snippet"
+                android:layout_margin="@dimen/_2sdp"
                 style="@style/textviewstyle"
-                android:layout_width="@dimen/_200sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_below="@id/title"
+                android:layout_below="@id/searchtitle"
                 android:gravity="center"
                 android:textStyle="normal"
                 android:textAlignment="viewStart"

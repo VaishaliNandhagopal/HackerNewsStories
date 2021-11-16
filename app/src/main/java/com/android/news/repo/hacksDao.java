@@ -10,6 +10,9 @@ import com.android.news.model.Model;
 
 import java.util.List;
 
+/**
+ * This DAO class for the data retrival and insertion
+ */
 @Dao
 public interface hacksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    tools:context=".search.SearchActivity">
+
     <LinearLayout
         android:id="@+id/searchlayout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/_5sdp">
+
         <EditText
             android:id="@+id/searchquery"
             android:layout_width="@dimen/_230sdp"
-            android:textSize="@dimen/_14sdp"
             android:layout_height="@dimen/_50sdp"
-            android:tooltipText="enter search text"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            android:tooltipText="enter search text" />
+
         <ImageButton
             android:id="@+id/goearch"
-            android:layout_gravity="bottom"
-            android:src="@drawable/search"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/_10sdp"
-            android:background="@drawable/item_gradient"/>
+            android:background="@drawable/item_gradient"
+            android:src="@drawable/search" />
     </LinearLayout>
+
     <RelativeLayout
-        android:layout_below="@id/searchlayout"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/_5sdp"
-        android:layout_height="match_parent">
-<include layout="@layout/fragment_first"
-    android:id="@+id/searchresult"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchlayout"
+        android:layout_margin="@dimen/_5sdp">
+
+        <include
+            android:id="@+id/searchresult"
+            layout="@layout/fragment_first" />
     </RelativeLayout>
 
 </RelativeLayout>
